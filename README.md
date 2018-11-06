@@ -1,3 +1,5 @@
+# Storage Migration Service Helper
+
 This PowerShell script will gather the appropriate event logs of a Windows Server 2019 computer running the Storage Migration Service feature, then save them to a ZIP file. 
 You should run this script against both the Orchestrator node and the transfer destination node when troubleshooting.
 Always run from within an elevated PowerShell console.
