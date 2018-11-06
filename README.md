@@ -21,7 +21,7 @@ PS C:\> `help Get-SmsLogs -Computer *Foo*`
 
 PowerShell is licensed under the [MIT license][].
 
-[MIT license]: https://github.com/storagemigrationservicehelper/storagemigrationservicehelper/tree/master/LICENSE.txt
+[MIT license]: https://github.com/nedpyle/storagemigrationservicehelper/blob/master/LICENSE.txt
 
 ## [Code of Conduct][conduct-md]
 
@@ -31,4 +31,4 @@ For more information see the [Code of Conduct FAQ][conduct-FAQ] or contact [open
 [conduct-code]: http://opensource.microsoft.com/codeofconduct/
 [conduct-FAQ]: http://opensource.microsoft.com/codeofconduct/faq/
 [conduct-email]: mailto:opencode@microsoft.com
-[conduct-md]: https://github.com/storagemigrationservicehelper/storagemigrationservicehelper/tree/master/./CODE_OF_CONDUCT.md
+[conduct-md]: https://github.com/nedpyle/storagemigrationservicehelper/blob/master/CODE_OF_CONDUCT.md
