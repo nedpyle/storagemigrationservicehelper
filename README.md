@@ -8,19 +8,19 @@ Always run from within an elevated PowerShell console.
 
 PS C:\> `Import-Module .\StorageMigrationServiceHelper.psm1`
 
-PS C:\> `help Get-SmsLogs`
+PS C:\> `Get-SmsLogs`
 
 *To use locally and save to a specified folder*
 
 PS C:\> `Import-Module .\StorageMigrationServiceHelper.psm1`
 
-PS C:\> `help Get-SmsLogs -Path *c:\temp*`
+PS C:\> `Get-SmsLogs -Path *c:\temp*`
 
 *To use remotely*
 
 PS C:\> `Import-Module .\StorageMigrationServiceHelper.psm1`
 
-PS C:\> `help Get-SmsLogs -Computer *Foo*`
+PS C:\> `Get-SmsLogs -Computer *Foo*`
 
 ## Legal and Licensing
 
