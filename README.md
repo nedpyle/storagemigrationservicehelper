@@ -22,6 +22,12 @@ PS C:\> `Import-Module .\StorageMigrationServiceHelper.psm1`
 
 PS C:\> `Get-SmsLogs -Computer *Foo*`
 
+*To see all help*
+
+PS C:\> `Import-Module .\StorageMigrationServiceHelper.psm1`
+
+PS C:\> `Help Get-SmsLogs`
+
 ## Legal and Licensing
 
 PowerShell is licensed under the [MIT license][].
