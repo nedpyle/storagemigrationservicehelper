@@ -28,7 +28,7 @@ PowerShell is licensed under the [MIT license][].
 
 [MIT license]: https://github.com/nedpyle/storagemigrationservicehelper/blob/master/LICENSE
 
-## [Code of Conduct][conduct-md]
+## Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct][conduct-code].
 For more information see the [Code of Conduct FAQ][conduct-FAQ] or contact [opencode@microsoft.com][conduct-email] with any additional questions or comments.
