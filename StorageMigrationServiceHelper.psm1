@@ -53,13 +53,8 @@ Function LogAction($message)
 Function GetSmsEventLogs($SmsLogsFolder)
 {
     $names = @{}
-    $names.Add("Microsoft-Windows-StorageMigrationService/Admin", "$($targetComputerName)_Sms_Admin.log")
     $names.Add("Microsoft-Windows-StorageMigrationService/Debug", "$($targetComputerName)_Sms_Debug.log")
-    $names.Add("Microsoft-Windows-StorageMigrationService/Operational", "$($targetComputerName)_Sms_Operational.log")
-
-    $names.Add("Microsoft-Windows-StorageMigrationService-Proxy/Admin", "$($targetComputerName)_Proxy_Admin.log")
     $names.Add("Microsoft-Windows-StorageMigrationService-Proxy/Debug", "$($targetComputerName)_Proxy_Debug.log")
-    $names.Add("Microsoft-Windows-StorageMigrationService-Proxy/Operational", "$($targetComputerName)_Proxy_Operational.log")
 
     foreach ($key in $names.Keys)
     {
@@ -85,6 +80,60 @@ Function GetSmsEventLogs($SmsLogsFolder)
         }
     }
 }
+
+Function GetSmsEventLogs2($SmsLogsFolder)
+{
+    $names = @{}
+    $names.Add("Microsoft-Windows-StorageMigrationService/Admin", "$($targetComputerName)_Sms_Admin.log")
+    $names.Add("Microsoft-Windows-StorageMigrationService/Operational", "$($targetComputerName)_Sms_Operational.log")
+
+    $names.Add("Microsoft-Windows-StorageMigrationService-Proxy/Admin", "$($targetComputerName)_Proxy_Admin.log")
+    $names.Add("Microsoft-Windows-StorageMigrationService-Proxy/Operational", "$($targetComputerName)_Proxy_Operational.log")
+
+    foreach ($key in $names.Keys)
+    {
+        $outFile = $names[$key]
+        LogAction "Collecting traces for $($key) (outFile=$outFile)"
+        
+        $outFullFile = "$SmsLogsFolder\$outFile"
+        
+        if (! $computerNameWasProvided)
+        {
+            get-winevent -logname $key -oldest -ea SilentlyContinue | foreach-object { #write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} > "$outFullFile"
+                $id=$_.Id;
+                $l = (0, (6 - $id.Length) | Measure -Max).Maximum
+                $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
+                $m += $_.Message
+                $m
+            } > "$outFullFile"
+
+        }
+        else
+        {
+            if ($Credential -eq $null)
+            {
+                Get-WinEvent -ComputerName $targetComputerName -logname $key -oldest -ea SilentlyContinue | foreach-object {#write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} > "$outFullFile"
+                    $id=$_.Id;
+                    $l = (0, (6 - $id.Length) | Measure -Max).Maximum
+                    $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
+                    $m += $_.Message
+                    $m
+                } > "$outFullFile"
+            }
+            else
+            {
+                Get-WinEvent -ComputerName $targetComputerName -Credential $Credential -logname $key -oldest -ea SilentlyContinue | foreach-object {#write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} > "$outFullFile"
+                    $id=$_.Id;
+                    $l = (0, (6 - $id.Length) | Measure -Max).Maximum
+                    $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
+                    $m += $_.Message
+                    $m
+                } > "$outFullFile"
+            }
+        }
+    }
+}
+
 
 Function GetSystemEventLogs($SmsLogsFolder)
 {
@@ -381,7 +430,8 @@ Function Get-SmsLogs (
     Write "TargetComputerName: '$targetComputerName'"
     Write "Path: '$Path'"
 
-    GetSmsEventLogs -SmsLogsFolder $SmsLogsFolder
+    GetSmsEventLogs  -SmsLogsFolder $SmsLogsFolder
+    GetSmsEventLogs2 -SmsLogsFolder $SmsLogsFolder
     GetSystemEventLogs -SmsLogsFolder $SmsLogsFolder
     GetSystemInfo -SmsLogsFolder $SmsLogsFolder
     
