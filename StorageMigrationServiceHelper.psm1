@@ -65,17 +65,17 @@ Function GetSmsEventLogs($SmsLogsFolder)
         
         if (! $computerNameWasProvided)
         {
-            get-winevent -logname $key -oldest -ea SilentlyContinue | foreach-object {$_.Message} > "$outFullFile"
+            get-winevent -logname $key -oldest -ea SilentlyContinue | foreach-object {$_.Message} | Set-Content -Path "$outFullFile"
         }
         else
         {
             if ($Credential -eq $null)
             {
-                Get-WinEvent -ComputerName $targetComputerName -logname $key -oldest -ea SilentlyContinue | foreach-object {$_.Message} > "$outFullFile"
+                Get-WinEvent -ComputerName $targetComputerName -logname $key -oldest -ea SilentlyContinue | foreach-object {$_.Message} | Set-Content -Path "$outFullFile"
             }
             else
             {
-                Get-WinEvent -ComputerName $targetComputerName -Credential $Credential -logname $key -oldest -ea SilentlyContinue | foreach-object {$_.Message} > "$outFullFile"
+                Get-WinEvent -ComputerName $targetComputerName -Credential $Credential -logname $key -oldest -ea SilentlyContinue | foreach-object {$_.Message} | Set-Content -Path "$outFullFile"
             }
         }
     }
@@ -99,36 +99,36 @@ Function GetSmsEventLogs2($SmsLogsFolder)
         
         if (! $computerNameWasProvided)
         {
-            get-winevent -logname $key -oldest -ea SilentlyContinue | foreach-object { #write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} > "$outFullFile"
+            get-winevent -logname $key -oldest -ea SilentlyContinue | foreach-object { #write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} | Set-Content -Path "$outFullFile"
                 $id=$_.Id;
                 $l = (0, (6 - $id.Length) | Measure -Max).Maximum
                 $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
                 $m += $_.Message
                 $m
-            } > "$outFullFile"
+            } | Set-Content -Path "$outFullFile"
 
         }
         else
         {
             if ($Credential -eq $null)
             {
-                Get-WinEvent -ComputerName $targetComputerName -logname $key -oldest -ea SilentlyContinue | foreach-object {#write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} > "$outFullFile"
+                Get-WinEvent -ComputerName $targetComputerName -logname $key -oldest -ea SilentlyContinue | foreach-object {#write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} | Set-Content -Path "$outFullFile"
                     $id=$_.Id;
                     $l = (0, (6 - $id.Length) | Measure -Max).Maximum
                     $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
                     $m += $_.Message
                     $m
-                } > "$outFullFile"
+                } | Set-Content -Path "$outFullFile"
             }
             else
             {
-                Get-WinEvent -ComputerName $targetComputerName -Credential $Credential -logname $key -oldest -ea SilentlyContinue | foreach-object {#write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} > "$outFullFile"
+                Get-WinEvent -ComputerName $targetComputerName -Credential $Credential -logname $key -oldest -ea SilentlyContinue | foreach-object {#write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} | Set-Content -Path "$outFullFile"
                     $id=$_.Id;
                     $l = (0, (6 - $id.Length) | Measure -Max).Maximum
                     $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
                     $m += $_.Message
                     $m
-                } > "$outFullFile"
+                } | Set-Content -Path "$outFullFile"
             }
         }
     }
@@ -148,7 +148,7 @@ Function GetSystemEventLogs($SmsLogsFolder)
             $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
             $m += $_.Message
             $m
-        } > "$outFullFile"
+        } | Set-Content -Path "$outFullFile"
     }
     else
     {
@@ -160,7 +160,7 @@ Function GetSystemEventLogs($SmsLogsFolder)
                 $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
                 $m += $_.Message
                 $m
-            } > "$outFullFile"
+            } | Set-Content -Path "$outFullFile"
         }
         else
         {
@@ -170,7 +170,7 @@ Function GetSystemEventLogs($SmsLogsFolder)
                 $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
                 $m += $_.Message
                 $m
-            } > "$outFullFile"
+            } | Set-Content -Path "$outFullFile"
         }
     }
 }
