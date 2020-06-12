@@ -180,6 +180,11 @@ Function GetSystemInfo($SmsLogsFolder)
     if (! $computerNameWasProvided)
     {
         $remoteFeatures = Get-WindowsFeature
+        
+        $windows = $env:systemroot
+	    $orcver = dir $windows\sms\* | fl versioninfo
+	    $proxyver = dir $windows\smsproxy\* | fl versioninfo
+        
     }
     else
     {
@@ -207,6 +212,8 @@ Function GetSystemInfo($SmsLogsFolder)
 
     $areSmsCmdletsAvailable = $false
     $isSmsInstalled = $false
+    Write $orcver
+    Write $proxyver
     
     foreach ($feature in $features)
     {
