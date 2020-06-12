@@ -23,8 +23,13 @@
 # SOFTWARE.
 
 
-Function GetSmsLogsFolder($Path, [ref]$SmsLogsFolder)
+Function GetSmsLogsFolder
 {
+    [cmdletbinding()]
+    param (
+        $Path,
+        [ref]$SmsLogsFolder
+    )
     $suffix = $null
     $folderNamePrefix = "StorageMigrationLog_$targetComputerName"
     
@@ -50,8 +55,13 @@ Function LogAction($message)
     write "==> $message"
 }
 
-Function GetSmsEventLogs($SmsLogsFolder)
+Function GetSmsEventLogs
 {
+    [cmdletbinding()]
+    param (
+        $SmsLogsFolder
+    )
+
     $names = @{}
     $names.Add("Microsoft-Windows-StorageMigrationService/Debug", "$($targetComputerName)_Sms_Debug.log")
     $names.Add("Microsoft-Windows-StorageMigrationService-Proxy/Debug", "$($targetComputerName)_Proxy_Debug.log")
@@ -81,8 +91,13 @@ Function GetSmsEventLogs($SmsLogsFolder)
     }
 }
 
-Function GetSmsEventLogs2($SmsLogsFolder)
+Function GetSmsEventLogs2
 {
+    [cmdletbinding()]
+    param (
+        $SmsLogsFolder
+    )
+
     $names = @{}
     $names.Add("Microsoft-Windows-StorageMigrationService/Admin", "$($targetComputerName)_Sms_Admin.log")
     $names.Add("Microsoft-Windows-StorageMigrationService/Operational", "$($targetComputerName)_Sms_Operational.log")
@@ -135,8 +150,13 @@ Function GetSmsEventLogs2($SmsLogsFolder)
 }
 
 
-Function GetSystemEventLogs($SmsLogsFolder)
+Function GetSystemEventLogs
 {
+    [cmdletbinding()]
+    param (
+        $SmsLogsFolder
+    )
+
     $outFile = "$($targetComputerName)_System.log"
     $outFullFile = "$SmsLogsFolder\$outFile"
     
@@ -175,8 +195,12 @@ Function GetSystemEventLogs($SmsLogsFolder)
     }
 }
 
-Function GetSystemInfo($SmsLogsFolder)
+Function GetSystemInfo
 {
+    [cmdletbinding()]
+    param (
+        $SmsLogsFolder
+    )
     if (! $computerNameWasProvided)
     {
         $remoteFeatures = Get-WindowsFeature
@@ -402,12 +426,14 @@ write "After ###################"
     }
 }
 
-Function Get-SmsLogs (
-    [string] $ComputerName = $null,
-    [System.Management.Automation.PSCredential] $Credential = $null,
-    [string] $Path = (Get-Item -Path ".\").FullName
-)
+Function Get-SmsLogs
 {
+    param (
+        [string] $ComputerName = "$Env:ComputerName",
+        [System.Management.Automation.PSCredential] $Credential = [PSCredential]::Empty,
+        [string] $Path = (Get-Item -Path ".\").FullName
+    )
+
     $error.Clear()
     
     if ($ComputerName -eq $null -or $ComputerName -eq "")
