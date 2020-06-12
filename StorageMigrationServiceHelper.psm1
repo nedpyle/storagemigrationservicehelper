@@ -31,7 +31,7 @@ Function GetSmsLogsFolder($Path, [ref]$SmsLogsFolder)
     do
     {
         $p = $Path + "\$folderNamePrefix"
-        if ($suffix -ne $null)
+        if ($null -ne $suffix)
         {
             $p += "_$suffix"
             $suffix += 1
@@ -69,7 +69,7 @@ Function GetSmsEventLogs($SmsLogsFolder)
         }
         else
         {
-            if ($Credential -eq $null)
+            if ($null -eq $Credential)
             {
                 Get-WinEvent -ComputerName $targetComputerName -logname $key -oldest -ea SilentlyContinue | foreach-object {$_.Message} > "$outFullFile"
             }
@@ -110,7 +110,7 @@ Function GetSmsEventLogs2($SmsLogsFolder)
         }
         else
         {
-            if ($Credential -eq $null)
+            if ($null -eq $Credential)
             {
                 Get-WinEvent -ComputerName $targetComputerName -logname $key -oldest -ea SilentlyContinue | foreach-object {#write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} > "$outFullFile"
                     $id=$_.Id;
@@ -152,7 +152,7 @@ Function GetSystemEventLogs($SmsLogsFolder)
     }
     else
     {
-        if ($Credential -eq $null)
+        if ($null -eq $Credential)
         {
             get-winevent -ComputerName $targetComputerName -logname System -oldest -ea SilentlyContinue | foreach-object {
                 $id=$_.Id;
@@ -188,7 +188,7 @@ Function GetSystemInfo($SmsLogsFolder)
     }
     else
     {
-        if ($Credential -eq $null)
+        if ($null -eq $Credential)
         {
             $remoteFeatures = Get-WindowsFeature -ComputerName $targetComputerName
         }
@@ -244,7 +244,7 @@ Function GetSystemInfo($SmsLogsFolder)
         }
         else
         {
-            if ($Credential -eq $null)
+            if ($null -eq $Credential)
             {
                 $smsStates = Get-SmsState -OrchestratorComputerName $targetComputerName
             }
@@ -269,7 +269,7 @@ write "After ###################"
             }
             else
             {
-                if ($Credential -eq $null)
+                if ($null -eq $Credential)
                 {
                     $inventorySummary = Get-SmsState -OrchestratorComputerName $targetComputerName -Name $job -InventorySummary
                 }
@@ -293,7 +293,7 @@ write "After ###################"
                 }
                 else
                 {
-                    if ($Credential -eq $null)
+                    if ($null -eq $Credential)
                     {
                         $detail = Get-SmsState -OrchestratorComputerName $targetComputerName -Name $job -ComputerName $device -InventoryConfigDetail
                     }
@@ -314,7 +314,7 @@ write "After ###################"
                 }
                 else
                 {
-                    if ($Credential -eq $null)
+                    if ($null -eq $Credential)
                     {
                         $detail = Get-SmsState -OrchestratorComputerName $targetComputerName -Name $job -ComputerName $device -InventorySMBDetail
                     }
@@ -338,7 +338,7 @@ write "After ###################"
                 }
                 else
                 {
-                    if ($Credential -eq $null)
+                    if ($null -eq $Credential)
                     {
                         $transferSummary = Get-SmsState -OrchestratorComputerName $targetComputerName -Name $job -TransferSummary
                     }
@@ -362,7 +362,7 @@ write "After ###################"
                     }
                     else
                     {
-                        if ($Credential -eq $null)
+                        if ($null -eq $Credential)
                         {
                             $detail = Get-SmsState -OrchestratorComputerName $targetComputerName -Name $job -ComputerName -ComputerName $device $device -TransferSMBDetail
                         }
@@ -384,7 +384,7 @@ write "After ###################"
                 }
                 else
                 {
-                    if ($Credential -eq $null)
+                    if ($null -eq $Credential)
                     {
                         $cutoverSummary = Get-SmsState -OrchestratorComputerName $targetComputerName -Name $job -CutoverSummary
                     }
@@ -410,7 +410,7 @@ Function Get-SmsLogs (
 {
     $error.Clear()
     
-    if ($ComputerName -eq $null -or $ComputerName -eq "")
+    if ($null -eq $ComputerName -or $ComputerName -eq "")
     {
         $computerNameWasProvided = $false
         $targetComputerName = "$env:ComputerName"
