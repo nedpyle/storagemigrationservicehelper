@@ -52,9 +52,10 @@ Function LogAction($message)
 
 Function GetSmsEventLogs($SmsLogsFolder)
 {
-    $names = @{}
-    $names.Add("Microsoft-Windows-StorageMigrationService/Debug", "$($targetComputerName)_Sms_Debug.log")
-    $names.Add("Microsoft-Windows-StorageMigrationService-Proxy/Debug", "$($targetComputerName)_Proxy_Debug.log")
+    $names = @{
+        "Microsoft-Windows-StorageMigrationService/Debug" = "$($targetComputerName)_Sms_Debug.log"
+        "Microsoft-Windows-StorageMigrationService-Proxy/Debug" ="$($targetComputerName)_Proxy_Debug.log"
+    }
 
     foreach ($key in $names.Keys)
     {
@@ -83,12 +84,13 @@ Function GetSmsEventLogs($SmsLogsFolder)
 
 Function GetSmsEventLogs2($SmsLogsFolder)
 {
-    $names = @{}
-    $names.Add("Microsoft-Windows-StorageMigrationService/Admin", "$($targetComputerName)_Sms_Admin.log")
-    $names.Add("Microsoft-Windows-StorageMigrationService/Operational", "$($targetComputerName)_Sms_Operational.log")
+    $names = @{
+    "Microsoft-Windows-StorageMigrationService/Admin" = "$($targetComputerName)_Sms_Admin.log"
+    "Microsoft-Windows-StorageMigrationService/Operational" = "$($targetComputerName)_Sms_Operational.log"
 
-    $names.Add("Microsoft-Windows-StorageMigrationService-Proxy/Admin", "$($targetComputerName)_Proxy_Admin.log")
-    $names.Add("Microsoft-Windows-StorageMigrationService-Proxy/Operational", "$($targetComputerName)_Proxy_Operational.log")
+    "Microsoft-Windows-StorageMigrationService-Proxy/Admin" = "$($targetComputerName)_Proxy_Admin.log"
+    "Microsoft-Windows-StorageMigrationService-Proxy/Operational" = "$($targetComputerName)_Proxy_Operational.log"
+    }
 
     foreach ($key in $names.Keys)
     {
