@@ -47,7 +47,7 @@ Function GetSmsLogsFolder($Path, [ref]$SmsLogsFolder)
 
 Function LogAction($message)
 {
-    write "==> $message"
+    Write-Output "==> $message"
 }
 
 Function GetSmsEventLogs($SmsLogsFolder)
@@ -101,7 +101,7 @@ Function GetSmsEventLogs2($SmsLogsFolder)
         {
             get-winevent -logname $key -oldest -ea SilentlyContinue | foreach-object { #write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} > "$outFullFile"
                 $id=$_.Id;
-                $l = (0, (6 - $id.Length) | Measure -Max).Maximum
+                $l = (0, (6 - $id.Length) | Measure-Object -Max).Maximum
                 $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
                 $m += $_.Message
                 $m
@@ -114,7 +114,7 @@ Function GetSmsEventLogs2($SmsLogsFolder)
             {
                 Get-WinEvent -ComputerName $targetComputerName -logname $key -oldest -ea SilentlyContinue | foreach-object {#write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} > "$outFullFile"
                     $id=$_.Id;
-                    $l = (0, (6 - $id.Length) | Measure -Max).Maximum
+                    $l = (0, (6 - $id.Length) | Measure-Object -Max).Maximum
                     $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
                     $m += $_.Message
                     $m
@@ -124,7 +124,7 @@ Function GetSmsEventLogs2($SmsLogsFolder)
             {
                 Get-WinEvent -ComputerName $targetComputerName -Credential $Credential -logname $key -oldest -ea SilentlyContinue | foreach-object {#write "$_.TimeCreated $_.Id $_.LevelDisplayName $_.Message"} > "$outFullFile"
                     $id=$_.Id;
-                    $l = (0, (6 - $id.Length) | Measure -Max).Maximum
+                    $l = (0, (6 - $id.Length) | Measure-Object -Max).Maximum
                     $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
                     $m += $_.Message
                     $m
@@ -144,7 +144,7 @@ Function GetSystemEventLogs($SmsLogsFolder)
     {
         get-winevent -logname System -oldest -ea SilentlyContinue | foreach-object {
             $id=$_.Id;
-            $l = (0, (6 - $id.Length) | Measure -Max).Maximum
+            $l = (0, (6 - $id.Length) | Measure-Object -Max).Maximum
             $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
             $m += $_.Message
             $m
@@ -156,7 +156,7 @@ Function GetSystemEventLogs($SmsLogsFolder)
         {
             get-winevent -ComputerName $targetComputerName -logname System -oldest -ea SilentlyContinue | foreach-object {
                 $id=$_.Id;
-                $l = (0, (6 - $id.Length) | Measure -Max).Maximum
+                $l = (0, (6 - $id.Length) | Measure-Object -Max).Maximum
                 $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
                 $m += $_.Message
                 $m
@@ -166,7 +166,7 @@ Function GetSystemEventLogs($SmsLogsFolder)
         {
             get-winevent -ComputerName $targetComputerName -Credential $Credential -logname System -oldest -ea SilentlyContinue | foreach-object {
                 $id=$_.Id;
-                $l = (0, (6 - $id.Length) | Measure -Max).Maximum
+                $l = (0, (6 - $id.Length) | Measure-Object -Max).Maximum
                 $m = "$($_.TimeCreated) {0,$l} $($_.LevelDisplayName) " -f $id
                 $m += $_.Message
                 $m
@@ -198,7 +198,7 @@ Function GetSystemInfo($SmsLogsFolder)
         }
     }
     
-    $remoteFeatures | ft -AutoSize
+    $remoteFeatures | Format-Table -AutoSize
     
     if ($computerNameWasProvided)
     {
@@ -233,8 +233,8 @@ Function GetSystemInfo($SmsLogsFolder)
         }
     }
     
-    Write "areSmsCmdletsAvailable: $areSmsCmdletsAvailable"
-    Write "isSmsInstalled: $isSmsInstalled"
+    Write-Output "areSmsCmdletsAvailable: $areSmsCmdletsAvailable"
+    Write-Output "isSmsInstalled: $isSmsInstalled"
 
     if ($areSmsCmdletsAvailable -and $isSmsInstalled)
     {
@@ -254,14 +254,14 @@ Function GetSystemInfo($SmsLogsFolder)
             }
         }
         
-        write $smsStates
-write "After ###################"
+        Write-Output $smsStates
+Write-Output "After ###################"
 
         foreach ($state in $smsStates)
         {
             $job = $state.Job
-            write "+++"
-            write "Inventory summary for job: $job"
+            Write-Output "+++"
+            Write-Output "Inventory summary for job: $job"
             
             if (! $computerNameWasProvided)
             {
@@ -279,13 +279,13 @@ write "After ###################"
                 }
             }
             
-            write $inventorySummary
+            Write-Output $inventorySummary
 
             foreach ($entry in $inventorySummary)
             {
                 $device = $entry.Device
-                write "!!!"
-                write "Inventory config detail for device: $device"
+                Write-Output "!!!"
+                Write-Output "Inventory config detail for device: $device"
 
                 if (! $computerNameWasProvided)
                 {
@@ -303,10 +303,10 @@ write "After ###################"
                     }
                 }
 
-                write $detail
+                Write-Output $detail
 
-                write "!!!"
-                write "Inventory SMB detail for device: $device"
+                Write-Output "!!!"
+                Write-Output "Inventory SMB detail for device: $device"
 
                 if (! $computerNameWasProvided)
                 {
@@ -324,13 +324,13 @@ write "After ###################"
                     }
                 }
 
-                write $detail
+                Write-Output $detail
             }
 
             if ($state.LastOperation -ne "Inventory")
             {
-                write "+++"
-                write "Transfer summary for job: $job"
+                Write-Output "+++"
+                Write-Output "Transfer summary for job: $job"
 
                 if (! $computerNameWasProvided)
                 {
@@ -348,13 +348,13 @@ write "After ###################"
                     }
                 }
                 
-                write $transferSummary
+                Write-Output $transferSummary
 
                 foreach ($entry in $inventorySummary)
                 {
                     $device = $entry.Device
-                    write "!!!"
-                    write "Transfer SMB detail for device: $device"
+                    Write-Output "!!!"
+                    Write-Output "Transfer SMB detail for device: $device"
 
                     if (! $computerNameWasProvided)
                     {
@@ -372,11 +372,11 @@ write "After ###################"
                         }
                     }
 
-                    write $detail
+                    Write-Output $detail
                 }
                 
-                write "+++"
-                write "Cutover summary for job: $job"
+                Write-Output "+++"
+                Write-Output "Cutover summary for job: $job"
 
                 if (! $computerNameWasProvided)
                 {
@@ -394,9 +394,9 @@ write "After ###################"
                     }
                 }
 
-                write $cutoverSummary
+                Write-Output $cutoverSummary
             }
-            write "==="
+            Write-Output "==="
         }
 
     }
@@ -431,11 +431,11 @@ Function Get-SmsLogs (
     Start-Transcript -Path "$smsLogsFolder\$($targetComputerName)_Get-SmsLogs.log" -Confirm:0
     
     $date = Get-Date
-    write "Get-SmsLogs started on $date"
+    Write-Output "Get-SmsLogs started on $date"
     
-    Write "ComputerName: '$ComputerName'"
-    Write "TargetComputerName: '$targetComputerName'"
-    Write "Path: '$Path'"
+    Write-Output "ComputerName: '$ComputerName'"
+    Write-Output "TargetComputerName: '$targetComputerName'"
+    Write-Output "Path: '$Path'"
 
     GetSmsEventLogs  -SmsLogsFolder $SmsLogsFolder
     GetSmsEventLogs2 -SmsLogsFolder $SmsLogsFolder
@@ -443,7 +443,7 @@ Function Get-SmsLogs (
     GetSystemInfo -SmsLogsFolder $SmsLogsFolder
     
     $date = Get-Date
-    write "Get-SmsLogs finished on $date"
+    Write-Output "Get-SmsLogs finished on $date"
     
     Stop-Transcript
 
